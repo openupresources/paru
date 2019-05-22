@@ -63,6 +63,15 @@ module Paru
                 end 
             end
 
+            # Set the value for key in this attributes object
+            #
+            # @param key [String] the key to store the value in.
+            # @param key [String] the value to be stored in the key.
+            # not exists
+            def []=(key, value)
+                @data[key] = value
+            end
+
             # Does this attributes object have this key?
             #
             # @param name [String] key to find
