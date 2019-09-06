@@ -19,7 +19,7 @@
 module Paru
     module PandocFilter
         # Attr represents an attribute object for a node. It contains of an id, a
-        # list of class names and a list of key-value pairs. 
+        # list of class names and a list of key-value pairs.
         #
         # @see https://hackage.haskell.org/package/pandoc-types-1.17.0.5/docs/Text-Pandoc-Definition.html#t:Attr
         #
@@ -31,7 +31,7 @@ module Paru
         class Attr
             include Enumerable
 
-            attr_accessor :id, :classes
+            attr_accessor :id, :classes, :data
 
             # Create a new attributes object
             #
@@ -39,7 +39,7 @@ module Paru
             #   [key-value pairs]]
             def initialize(attributes = [])
                 id, classes, data = attributes
-          
+
                 @id = id || ""
 
                 @classes = classes || []
@@ -57,10 +57,10 @@ module Paru
             #
             # @param key [String] the key to get the value for. Nil if it does
             # not exists
-            def [](key) 
+            def [](key)
                 if @data.key? key
                     @data[key]
-                end 
+                end
             end
 
             # Does this attributes object have this key?
