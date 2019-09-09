@@ -23,10 +23,11 @@ require_relative "./filter/metadata.rb"
 module Paru
     # Paru filter is a wrapper around pandoc's JSON api, which is based on
     # {pandoc-types}[https://hackage.haskell.org/package/pandoc-types-1.17.0.4/docs/Text-Pandoc-Definition.html].
-    # Pandoc treats block elements and inline elements differently. 
+    # Pandoc treats block elements and inline elements differently.
     #
     # Pandoc's block elements are:
     PANDOC_BLOCK = [
+        "Block",
         "Plain",
         "Para",
         "LineBlock",
@@ -162,7 +163,7 @@ module Paru
     # this example could look like:
     #
     # {include:file:examples/filters/capitalize_first_sentence.rb}
-    #     
+    #
     # The distance is denoted after a selector by an integer. In this case
     # "Header +1 Para" selects all {PandocFilter::Para} nodes that directly
     # follow an {PandocFilter::Header} node. You can use a distance with any
@@ -184,7 +185,7 @@ module Paru
     #
     #     rule.markdown = ""
     #
-    # == Manipulating metadata: 
+    # == Manipulating metadata:
     #
     # One of the interesting features of the pandoc markdown format is the
     # ability to add metadata to a document via a YAML block or command line
@@ -207,7 +208,7 @@ module Paru
     #   @return [Document] The document being filtered
     #
     # @!attribute current_node
-    #   @return [Node] The node in the AST of the document being filtered that 
+    #   @return [Node] The node in the AST of the document being filtered that
     #      is currently being inspected by the filter.
     #
     class Filter
@@ -221,7 +222,7 @@ module Paru
         #
         # @param input [IO = $stdin] the input stream to read, defaults to
         #   STDIN
-        # @param output [IO = $stdout] the output stream to write, defaults to 
+        # @param output [IO = $stdout] the output stream to write, defaults to
         #   STDOUT
         def initialize(input = $stdin, output = $stdout)
             @input = input
@@ -230,7 +231,7 @@ module Paru
 
         # Run the filter specified by block. This is a convenience method that
         # creates a new {Filter} using input stream STDIN and output stream
-        # STDOUT and immediately runs {filter} with the block supplied. 
+        # STDOUT and immediately runs {filter} with the block supplied.
         #
         # @param block [Proc] the filter specification
         #
@@ -298,7 +299,7 @@ module Paru
         # Specify what nodes to filter with a +selector+. If the +current_node+
         # matches that selector, it is passed to the block to this +with+ method.
         #
-        # @param selector [String] a selector string 
+        # @param selector [String] a selector string
         # @yield [Node] the current node if it matches the selector
         def with(selector)
             @selectors[selector] = Selector.new selector unless @selectors.has_key? selector
@@ -335,7 +336,7 @@ module Paru
             @output.write @document.to_JSON
         end
     end
-    
+
     # FilterError is thrown when there is an error during filtering
     class FilterError < Error
     end
