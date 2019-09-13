@@ -28,7 +28,10 @@ module Paru
             def initialize(row_data)
                 super []
                 row_data.each do |cell|
-                    @children.push Block.new cell
+                    child = Block.new cell
+                    child.parent = self
+                    child.depth = depth += 1 unless depth.nil?
+                    @children.push child
                 end
             end
 

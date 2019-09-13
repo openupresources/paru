@@ -30,7 +30,10 @@ module Paru
             def initialize(contents)
                 super []
                 contents.each do |item|
-                    @children.push DefinitionListItem.new item
+                    child = DefinitionListItem.new item
+                    child.parent = self
+                    child.depth = depth += 1 unless depth.nil?
+                    @children.push child
                 end
             end
 
@@ -44,7 +47,7 @@ module Paru
             # @return [Array]
             def to_array()
                 @children.map do |def_item|
-                    def_item.to_array 
+                    def_item.to_array
                 end
             end
 
@@ -52,9 +55,9 @@ module Paru
             # definitions
             #
             # @param definitions [Array] Array of arrays with terms and their definitions
-            # @return [DefinitionList] 
+            # @return [DefinitionList]
             def self.from_array(definitions)
-                ast_items = definitions.map do |definition| 
+                ast_items = definitions.map do |definition|
                     term = Block.from_markdown(definition[0]).ast_contents
                     defin = List.from_markdown(definition[1])
 
