@@ -173,6 +173,7 @@ module Paru
         end
 
         def is_descendant?(node)
+            return false unless node.has_parent?
             distance = 0
             begin
                 distance += 1 if @distance > 0

@@ -44,7 +44,7 @@ module Paru
             include Enumerable
             include ASTManipulation
 
-            attr_accessor :parent
+            attr_accessor :parent, :depth
 
             # Block level nodes
             require_relative './block_quote.rb'
@@ -107,6 +107,7 @@ module Paru
             def initialize(contents = [], inline_children = false)
                 @children = []
                 @parent = nil
+                @depth = nil
 
                 if contents.is_a? Array
                     contents.each do |elt|
@@ -121,11 +122,12 @@ module Paru
                         end
 
                         child.parent = self
+                        child.depth = depth + 1 if depth
                         @children.push child
                     end
                 end
             end
-            
+
             # Create a new node from a markdown string. This is always a block
             # level node. If more
             # than one new node is created, a {Div} is created as a parent for
