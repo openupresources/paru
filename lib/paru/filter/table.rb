@@ -57,7 +57,6 @@ module Paru
                 contents[4].each do |row_data|
                     child = TableRow.new row_data
                     child.parent = self
-                    child.depth = @depth += 1 unless @depth.nil?
                     @children.push child
                 end
             end

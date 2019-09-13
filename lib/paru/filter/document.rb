@@ -115,7 +115,6 @@ WARNING
             def initialize(version = CURRENT_PANDOC_VERSION, meta = [], contents = [])
                 @version = Version.new version
                 @meta = Meta.new meta
-                @depth = 0
                 super contents
             end
 

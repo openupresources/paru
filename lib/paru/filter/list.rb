@@ -33,7 +33,6 @@ module Paru
                 contents.each do |item|
                     child = node_class.new item
                     child.parent = self
-                    child.depth = @depth += 1 unless @depth.nil?
                     @children.push child
                 end
             end

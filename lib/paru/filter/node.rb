@@ -44,7 +44,7 @@ module Paru
             include Enumerable
             include ASTManipulation
 
-            attr_accessor :parent, :depth
+            attr_accessor :parent
 
             # Block level nodes
             require_relative './block_quote.rb'
@@ -120,7 +120,6 @@ module Paru
                         end
 
                         child.parent = self
-                        child.depth = @depth += 1 unless @depth.nil?
                         @children.push child
                     end
                 end
@@ -193,6 +192,19 @@ module Paru
             #   otherwise.
             def has_parent?()
                 not @parent.nil?
+            end
+
+            # Get this node's ancestors,
+            #
+            # @return [Array<Node>] this node's ancestors as an Array.
+            def ancestors
+                return [] unless self.has_parent?
+                node_ancestors = [parent]
+                while node_ancestors.last.has_parent?
+                    break unless ctx_parent = node_ancestors.last.parent
+                    node_ancestors << ctx_parent
+                end
+                node_ancestors
             end
 
             # Is this a root node?

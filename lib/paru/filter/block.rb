@@ -23,7 +23,6 @@ module Paru
         # A Block level node.
         # @see https://hackage.haskell.org/package/pandoc-types-1.17.0.5/docs/Text-Pandoc-Definition.html#t:Block
         class Block < Node
-
             # Is this node a block?
             #
             # @return [Boolean] true
