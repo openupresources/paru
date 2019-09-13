@@ -19,7 +19,7 @@
 require "csv"
 require_relative "./block.rb"
 require_relative "./inline.rb"
-    
+
 module Paru
     module PandocFilter
         # The allignment of a table column
@@ -55,7 +55,10 @@ module Paru
                 @headers = TableRow.new contents[3]
                 @children = []
                 contents[4].each do |row_data|
-                    @children.push TableRow.new row_data
+                    child = TableRow.new row_data
+                    child.parent = self
+                    child.depth = @depth += 1 unless @depth.nil?
+                    @children.push child
                 end
             end
 
@@ -124,27 +127,27 @@ module Paru
             #
             # @return [Table]
             def self.from_array(data, **config)
-                return Table.new [[],[],[],[],[]] if data.empty? 
+                return Table.new [[],[],[],[],[]] if data.empty?
 
-                headers = if config.has_key? :headers then 
-                              config[:headers] 
-                          else 
-                              false 
+                headers = if config.has_key? :headers then
+                              config[:headers]
+                          else
+                              false
                           end
-                caption = if config.has_key? :caption then 
-                              Block.from_markdown(config[:caption]).ast_contents 
-                          else 
-                              [] 
+                caption = if config.has_key? :caption then
+                              Block.from_markdown(config[:caption]).ast_contents
+                          else
+                              []
                           end
 
-                alignment = if config.has_key? :alignment then 
-                                config[:alignment].map {|a| {"t" => "#{a}"}} 
+                alignment = if config.has_key? :alignment then
+                                config[:alignment].map {|a| {"t" => "#{a}"}}
                             else
                                 data.first.map {|_| {"t"=>"AlignLeft"}}
                             end
 
                 widths = if config.has_key? :widths then
-                            config[:widths] 
+                            config[:widths]
                          else
                              data.first.map {|_| 0}
                          end
@@ -156,7 +159,7 @@ module Paru
                     header = header.map {|cell| [Block.from_markdown(cell).to_ast]}
                     rows = data.slice(1..-1)
                 end
-                
+
                 rows = rows.map {|row| row.map {|cell| [Block.from_markdown(cell).to_ast]}}
 
                 Table.new [caption, alignment, widths, header, rows]
@@ -169,13 +172,13 @@ module Paru
             # @param config [Hash] See #from_file for details
             #
             # @return [Table]
-            def self.from_file(filename, **config) 
+            def self.from_file(filename, **config)
                 data = []
                 CSV.foreach(filename) do |row|
                     data << row
                 end
 
-                return self.from_array(data, config) 
+                return self.from_array(data, config)
             end
         end
     end

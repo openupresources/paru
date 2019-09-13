@@ -32,7 +32,7 @@ module Paru
                 contents.each do |item|
                     child = DefinitionListItem.new item
                     child.parent = self
-                    child.depth = depth += 1 unless depth.nil?
+                    child.depth = @depth += 1 unless @depth.nil?
                     @children.push child
                 end
             end

@@ -120,7 +120,7 @@ module Paru
                         end
 
                         child.parent = self
-                        child.depth = depth += 1 unless depth.nil?
+                        child.depth = @depth += 1 unless @depth.nil?
                         @children.push child
                     end
                 end
