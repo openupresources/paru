@@ -65,7 +65,7 @@ Unable to read document.
 Most likely cause: Paru expects a pandoc installation that has been
 compiled with pandoc-types >= #{CURRENT_PANDOC_VERSION.join('.')}. You can
 check which pandoc-types have been compiled with your pandoc installation by
-running `pandoc -v`. 
+running `pandoc -v`.
 
 Original error message: #{e.message}
 WARNING
@@ -98,7 +98,7 @@ WARNING
                     new_doc = Document.new CURRENT_PANDOC_VERSION, meta, []
                     new_doc.children = node_list
                 else
-                    node = PandocFilter::Plain.new [] 
+                    node = PandocFilter::Plain.new []
                     node.children = node_list
                     new_doc = Document.new CURRENT_PANDOC_VERSION, meta, [node.to_ast]
                 end
@@ -115,6 +115,7 @@ WARNING
             def initialize(version = CURRENT_PANDOC_VERSION, meta = [], contents = [])
                 @version = Version.new version
                 @meta = Meta.new meta
+                @depth = 0
                 super contents
             end
 

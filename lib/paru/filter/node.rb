@@ -21,7 +21,7 @@ require_relative "../pandoc.rb"
 require_relative './ast_manipulation.rb'
 
 module Paru
-    # PandocFilter is a module containig the paru's Filter functionality 
+    # PandocFilter is a module containig the paru's Filter functionality
     module PandocFilter
         # A Paru::Pandoc converter from JSON to markdown
         AST2MARKDOWN = Paru::Pandoc.new do
@@ -107,7 +107,6 @@ module Paru
             def initialize(contents = [], inline_children = false)
                 @children = []
                 @parent = nil
-                @depth = nil
 
                 if contents.is_a? Array
                     contents.each do |elt|
@@ -151,7 +150,7 @@ module Paru
                     node = container
                 end
 
-                return node 
+                return node
             end
 
             # For each child of this Node, yield the child
@@ -197,9 +196,9 @@ module Paru
                 not @parent.nil?
             end
 
-            # Is this a root node? 
+            # Is this a root node?
             #
-            # @return [Boolean] True if this node has a no parent, false 
+            # @return [Boolean] True if this node has a no parent, false
             #   otherwise
             def is_root?()
                 not has_parent?
@@ -219,7 +218,7 @@ module Paru
             def is_leaf?()
                 not has_children?
             end
-            
+
             # Does this node has a string value?
             #
             # @return [Boolean] true if this node has a string value, false
@@ -328,7 +327,7 @@ module Paru
                     []
                 end
             end
-            
+
             # Create an AST representation of this Node
             #
             # @return [Hash]
@@ -350,7 +349,7 @@ module Paru
             end
 
             alias outer_markdown markdown
-            
+
             # Set the markdown representation of this Node: replace this Node
             # by the Node represented by the markdown string. If an inline
             # node is being replaced and the replacement has more than one
@@ -365,7 +364,7 @@ module Paru
             #           line.markdown = "hi"
             #       end
             #   end
-            #       
+            #
             def markdown=(markdown)
                 json = MARKDOWN2JSON << markdown
                 temp_doc = PandocFilter::Document.from_JSON json
@@ -383,7 +382,7 @@ module Paru
                     # Only using first block node (paragraph?)
                     if is_inline?
                         temp_doc = temp_doc.children.first
-                        
+
                         if not temp_doc.children.all? {|node| node.is_inline?}
                             raise Error.new "Cannot replace the inline level node represented by '#{self.markdown}' with markdown that converts to block level nodes: '#{markdown}'."
                         end
@@ -397,7 +396,7 @@ module Paru
                         index += 1
                         parent.insert index, child
                     end
-                        
+
 
                     # Remove the original node
                     parent.remove_at current_index
@@ -408,7 +407,7 @@ module Paru
 
             # Has this node been replaced by using the {markdown} method? If
             # so, return true.
-            # 
+            #
             # @return [Boolean]
             def has_been_replaced?
                 not @replacement.nil?
