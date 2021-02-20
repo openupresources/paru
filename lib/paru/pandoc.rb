@@ -227,7 +227,7 @@ module Paru
         end
 
         version = version_string.match(/pandoc (\d+\.\d+.*)$/)[1]
-        data_dir = version_string.match(/Default user data directory: (.+)$/)[1]
+        data_dir = version_string.match(/User data directory: (.+)$/i)[1]
 
         @@info = {
             :version => version,
